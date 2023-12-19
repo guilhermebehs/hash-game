@@ -24,7 +24,7 @@ function onClickBlock(block){
     const symbol = isX? 'x': 'o';
     const id = `${symbol}_${block.id}`;
 
-    block.innerHTML = `<img class="${symbol}" id="${id}" src="./${symbol}.png"</img>`;
+    block.innerHTML = `<img class="${symbol}" id="${id}" src="./img/${symbol}.png"</img>`;
     numberOfMoves++;
     if(numberOfMoves >= 5) checkWinner(symbol);
     if(numberOfMoves === 9) showResult('Draw!');
