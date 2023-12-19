@@ -21,46 +21,67 @@ function generateTable(){
 function onClickBlock(block){
     const value = block.innerHTML;
     if(value) return;
-    block.innerHTML = `<div class="${isX? 'x': 'o'}">${isX?  'X': ''}</div>`;
+    const id = `${isX? 'x': 'o'}_${block.id}`;
+    block.innerHTML = `<div class="${isX? 'x': 'o'}" id="${id}">${isX?  'X': ''}</div>`;
     numberOfMoves++;
     if(numberOfMoves >= 5) checkWinner(isX? 'x': 'o');
-    if(numberOfMoves === 9) declareDraw();
+    if(numberOfMoves === 9) showResult('Draw!');
     isX = !isX;
 }
 
 function checkWinner(lastMoveSymbol){
-    checkLines(lastMoveSymbol);
-    checkColumns(lastMoveSymbol);
-    checkDiagonals(lastMoveSymbol);
+
+    const blocks = document.getElementsByClassName(lastMoveSymbol);
+    const blocksMapped = Array.from( blocks)
+        .map(({id}) => {const [_, lineColumn] = id.split('_'); return lineColumn.split('')})
+
+    checkLines(lastMoveSymbol,blocksMapped);
+    checkColumns(lastMoveSymbol, blocksMapped);
+    checkDiagonals(lastMoveSymbol, blocksMapped);
 
 }
 
-function checkLines(lastMoveSymbol){
-    [0,1,2].forEach(lineNumber => checkLine(lineNumber, lastMoveSymbol))
+function checkLines(lastMoveSymbol, blocksMapped){
+    for(let i =0; i < 3; i++)
+       if(checkLine(i, blocksMapped)){
+          showResult(`Winner: ${lastMoveSymbol}`);
+          break;
+       }
 }
 
-function checkLine(lineNumber, lastMoveSymbol){}
-
-function checkColumns(lastMoveSymbol){
-    [0,1,2].forEach(columnNumber => checkColumn(columnNumber, lastMoveSymbol))
+function checkColumns(lastMoveSymbol, blocksMapped){
+    for(let i =0; i < 3; i++)
+       if(checkColumn(i, blocksMapped)){
+        showResult(`Winner: ${lastMoveSymbol}`);
+        break;
+       }
 }
 
-function checkColumn(columnNumber, lastMoveSymbol){}
-
-function checkDiagonals(lastMoveSymbol){
-    [0,3].forEach(diagonalNumber => checkDiagonal(diagonalNumber, lastMoveSymbol))
+function checkDiagonals(lastMoveSymbol, blocksMapped){
+    if(checkDiagonal(blocksMapped,0,0) || checkDiagonal(blocksMapped,0,-2))
+       showResult(`Winner: ${lastMoveSymbol}`);
 }
 
-function checkDiagonal(lineNumber, lastMoveSymbol){}
-
-function declareWinner(lastMoveSymbol){
-    alert(`The winner is ${lastMoveSymbol}`);
-    restartGame();
+function checkLine(lineNumber, blocksMapped){
+    const linesFiltered = blocksMapped.filter(([line])=> Number(line) === lineNumber)
+    return linesFiltered.length === 3;
 }
 
+function checkColumn(columnNumber, blocksMapped){
+    const columnsFiltered = blocksMapped.filter(([_,column])=> Number(column) === columnNumber)
+    return columnsFiltered.length === 3;
+}
 
-function declareDraw(){
-    alert(`Draw`);
+function checkDiagonal(blocksMapped, diagonalFactorLine, diagonalFactorColumn){
+    const diagonalsFiltered =blocksMapped
+       .filter(([line,column])=> Number(line) === Math.abs(diagonalFactorLine++) 
+           && Number(column) === Math.abs(diagonalFactorColumn++))
+
+    return diagonalsFiltered.length === 3;     
+}
+
+function showResult(result){
+    alert(result);
     restartGame();
 }
 
