@@ -21,10 +21,12 @@ function generateTable(){
 function onClickBlock(block){
     const value = block.innerHTML;
     if(value) return;
-    const id = `${isX? 'x': 'o'}_${block.id}`;
-    block.innerHTML = `<div class="${isX? 'x': 'o'}" id="${id}">${isX?  'X': ''}</div>`;
+    const symbol = isX? 'x': 'o';
+    const id = `${symbol}_${block.id}`;
+
+    block.innerHTML = `<img class="${symbol}" id="${id}" src="./${symbol}.png"</img>`;
     numberOfMoves++;
-    if(numberOfMoves >= 5) checkWinner(isX? 'x': 'o');
+    if(numberOfMoves >= 5) checkWinner(symbol);
     if(numberOfMoves === 9) showResult('Draw!');
     isX = !isX;
 }
@@ -81,7 +83,7 @@ function checkDiagonal(blocksMapped, diagonalFactorLine, diagonalFactorColumn){
 }
 
 function showResult(result){
-    alert(result);
+    alert(result.toUpperCase());
     restartGame();
 }
 

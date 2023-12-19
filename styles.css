@@ -1,6 +1,6 @@
 .block{
-    width: 50px;
-    height: 50px;
+    width: 100px;
+    height: 100px;
     border: 1px solid #210707c7;
 }
 
@@ -10,25 +10,21 @@
 
 .table{
     flex-direction: column;
-    margin-left: 70%;
+    margin-left: 40%;
+    margin-top: 10%;
 }
 
 .o {
-    height: 70%;
-    width: 70%;
-    background-color: #d6cece;
-    border-radius: 20px;
-    margin-left: 10px;
-    margin-top: 5px;
+  width: 100%;
+  height: 100%;
 }
 
 .x {
-    height: 70%;
-    width: 70%;
-    margin-left: 10px;
-    margin-top: 5px;
+    width: 100%;
+    height: 100%;
 }
 
 body, html, div {
     display: flex;
+    width: 100%;
 }
